@@ -1,60 +1,58 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../assets/csir_4pi_logo.png";
 
-export default function Login() {
-  const navigate = useNavigate();
-
+export default function Signin() {
   const [form, setForm] = useState({
     username: "",
+    email: "",
     password: ""
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // demo validation
-    if (!form.username || !form.password) {
-      alert("Please enter username and password");
-      return;
-    }
-
-    // go to mode select page
-    navigate("/mode");
+    alert("Account created (demo)");
   };
 
   return (
     <div className="page">
       <img src={logo} alt="CSIR Logo" className="logo-img" />
 
-      <h1>Document Similarity Platform</h1>
+      <h1>Create Account</h1>
+      <p className="subtitle">Register for Document Similarity Platform</p>
 
       <div className="card">
         <form onSubmit={handleSubmit}>
           <label>Username</label>
           <input
-            placeholder="Enter your username"
-            value={form.username}
+            placeholder="Choose username"
             onChange={(e) =>
               setForm({ ...form, username: e.target.value })
+            }
+          />
+
+          <label>Email</label>
+          <input
+            placeholder="Enter email"
+            onChange={(e) =>
+              setForm({ ...form, email: e.target.value })
             }
           />
 
           <label>Password</label>
           <input
             type="password"
-            placeholder="Enter your password"
-            value={form.password}
+            placeholder="Create password"
             onChange={(e) =>
               setForm({ ...form, password: e.target.value })
             }
           />
 
-          <button type="submit">Login</button>
+          <button>Create Account</button>
         </form>
 
         <p className="switch">
-          No account? <Link to="/signin">Sign in</Link>
+          Already have account? <Link to="/">Login</Link>
         </p>
       </div>
     </div>

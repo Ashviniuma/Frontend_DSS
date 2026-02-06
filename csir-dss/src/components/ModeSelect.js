@@ -1,42 +1,45 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
+import { useNavigate, Link } from "react-router-dom";
+import logo from "../assets/csir_4pi_logo.png";
 
-function ModeSelect() {
+export default function ModeSelect() {
   const navigate = useNavigate();
 
-  function handleClick(mode) {
-    navigate("/search");
-  }
+  const handleSelect = (mode) => {
+    navigate("/workspace", { state: { mode } });
+  };
 
   return (
     <div className="page">
-      <div className="card">
+      <img src={logo} alt="CSIR Logo" className="logo-img" />
 
-        <div className="header">
-          <img src={logo} alt="CSIR Logo" className="logo" />
-          <h2>CSIR Fourth Paradigm Institute</h2>
+      <h1>Document Similarity Platform</h1>
+      <p className="subtitle">Choose your search mode</p>
+
+      <div className="card mode-card">
+        <div className="mode-grid">
+
+          <button
+            className="mode-box"
+            onClick={() => handleSelect("arxiv")}
+          >
+            <h3>ArXiv Online</h3>
+            <p>Search and compare with online research papers</p>
+          </button>
+
+          <button
+            className="mode-box"
+            onClick={() => handleSelect("local")}
+          >
+            <h3>Local Offline</h3>
+            <p>Compare with locally uploaded documents</p>
+          </button>
+
         </div>
 
-        <h3 className="subtitle big">Document Similarity Search</h3>
-
-        <div className="modeGrid">
-
-          <div className="modeBox" onClick={() => handleClick("arxiv")}>
-            <div className="modeTitle">ArXIV</div>
-            <div className="modeSub">Online</div>
-          </div>
-
-          <div className="modeBox" onClick={() => handleClick("local")}>
-            <div className="modeTitle">Local</div>
-            <div className="modeSub">Offline</div>
-          </div>
-
-        </div>
-
+        <p className="switch">
+          <Link to="/">← Back to Login</Link>
+        </p>
       </div>
     </div>
   );
 }
-
-export default ModeSelect;

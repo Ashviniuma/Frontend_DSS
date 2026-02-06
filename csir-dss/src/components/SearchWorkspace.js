@@ -1,94 +1,94 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
+import logo from "../assets/csir_4pi_logo.png";
 
-function SearchWorkspace() {
+export default function SearchWorkspace() {
   const navigate = useNavigate();
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function handleSearch() {
-    if (!text.trim()) {
-      alert("Enter abstract first");
-      return;
-    }
+  const maxChars = 1000;
+
+  const handleSearch = () => {
+    if (!text.trim()) return;
     setLoading(true);
-    setTimeout(() => setLoading(false), 2000);
-  }
+
+    setTimeout(() => {
+      setLoading(false);
+      alert("Search completed (demo)");
+    }, 1500);
+  };
 
   return (
-    <div className="workspacePage">
+    <div className="workspace-page">
 
-      {/* Header */}
-      <div className="topHeader modern">
-        <div className="headerLeft">
-          <img src={logo} className="logo" alt="CSIR Logo" />
-          <div>
-            <h2>CSIR Fourth Paradigm Institute</h2>
-            <span className="tagline">Document Similarity Search</span>
-          </div>
+      {/* HEADER */}
+      <div className="workspace-header">
+        <div className="header-left">
+          <img src={logo} alt="CSIR Logo" className="logo-small" />
         </div>
 
-        <button className="homeBtn modernBtn" onClick={() => navigate("/mode")}>
-          HOME
-        </button>
+        <div className="header-center">
+          <h2>CSIR Fourth Paradigm Institute</h2>
+          <p>Document Similarity Search</p>
+        </div>
+
+        <div className="header-right">
+          <button
+            className="home-btn"
+            onClick={() => navigate("/mode")}
+          >
+            Home
+          </button>
+        </div>
       </div>
 
-      {/* Body */}
-      <div className="workspaceBody">
+      {/* BODY */}
+      <div className="workspace-body">
 
-        {/* Sidebar */}
-        <div className="sidebar modernSide">
-          <div className="sideTitle">Workspace</div>
-
-          <div className="sideItem active">＋ New Search</div>
-          <div className="sideItem">History</div>
-
-          <div className="sideDivider"></div>
-
-          <div className="sideHint">
-            Your recent searches will appear here
-          </div>
+        {/* SIDEBAR */}
+        <div className="workspace-sidebar">
+          <button className="side-link">+ New Search</button>
+          <button className="side-link">History</button>
         </div>
 
-        {/* Main */}
-        <div className="mainPanel modernMain">
+        {/* MAIN */}
+        <div className="workspace-main">
+          <label className="input-label">
+            Enter Research Abstract
+          </label>
 
-          <div className="editorCard">
+          <textarea
+            className="abstract-box"
+            value={text}
+            onChange={(e) =>
+              setText(e.target.value.slice(0, maxChars))
+            }
+            placeholder="Paste or type abstract text here..."
+          />
 
-            <h3>Enter Research Abstract</h3>
+          <div className="search-row">
+            <button
+              className="search-btn"
+              onClick={handleSearch}
+            >
+              Search
+            </button>
 
-            <textarea
-              className="abstractBox modernBox"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Paste your research abstract here for similarity analysis..."
-            />
-
-            <div className="editorFooter">
-              <button className="searchBtn modernBtn" onClick={handleSearch}>
-                🔍 Run Similarity Search
-              </button>
-
-              <div className="charBadge">
-                {text.length} characters
-              </div>
-            </div>
-
+            <span className="char-count">
+              {text.length} characters
+            </span>
           </div>
 
           {loading && (
-            <div className="loading modernLoad">
+            <div className="loading-box">
               <div className="spinner"></div>
-              Extracting keywords & computing similarity...
+              <p>Analyzing document...</p>
             </div>
           )}
-
         </div>
 
       </div>
     </div>
   );
 }
-
-export default SearchWorkspace;
