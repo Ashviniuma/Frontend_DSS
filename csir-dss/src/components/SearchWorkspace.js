@@ -20,43 +20,42 @@ export default function SearchWorkspace() {
   };
 
   return (
-    <div className="workspace-page">
+    <div className="workspace-2col">
 
-      {/* HEADER */}
-      <div className="workspace-header">
-        <div className="header-left">
-          <img src={logo} alt="CSIR Logo" className="logo-small" />
-        </div>
+      {/* ===== LEFT SIDEBAR ===== */}
+      <div className="sidebar">
+        <button className="side-link">+ New Search</button>
+        <button className="side-link">History</button>
+      </div>
 
-        <div className="header-center">
-          <h2>CSIR Fourth Paradigm Institute</h2>
-          <p>Document Similarity Search</p>
-        </div>
+      {/* ===== RIGHT MAIN AREA ===== */}
+      <div className="main-area">
 
-        <div className="header-right">
+        {/* top row */}
+        <div className="top-row">
+          <div className="brand">
+            <img src={logo} alt="CSIR Logo" className="logo-small" />
+            <div>
+              <h1>CSIR Fourth Paradigm Institute</h1>
+              <br></br>
+              <h2>Document Similarity Search</h2>
+            </div>
+          </div>
+
           <button
             className="home-btn"
             onClick={() => navigate("/mode")}
           >
-            Home
+            HOME
           </button>
         </div>
-      </div>
 
-      {/* BODY */}
-      <div className="workspace-body">
-
-        {/* SIDEBAR */}
-        <div className="workspace-sidebar">
-          <button className="side-link">+ New Search</button>
-          <button className="side-link">History</button>
-        </div>
-
-        {/* MAIN */}
-        <div className="workspace-main">
+        {/* content */}
+        <div className="content-box">
           <label className="input-label">
             Enter Research Abstract
           </label>
+          <br></br>
 
           <textarea
             className="abstract-box"
@@ -68,10 +67,7 @@ export default function SearchWorkspace() {
           />
 
           <div className="search-row">
-            <button
-              className="search-btn"
-              onClick={handleSearch}
-            >
+            <button className="search-btn" onClick={handleSearch}>
               Search
             </button>
 
@@ -83,7 +79,7 @@ export default function SearchWorkspace() {
           {loading && (
             <div className="loading-box">
               <div className="spinner"></div>
-              <p>Analyzing document...</p>
+              <p>Extracting Keywords</p>
             </div>
           )}
         </div>
