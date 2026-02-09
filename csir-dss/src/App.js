@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Signin from "./components/Signin";
 import ModeSelect from "./components/ModeSelect";
 import SearchWorkspace from "./components/SearchWorkspace";
+import ResultsPage from "./components/ResultsPage";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/mode" element={<ModeSelect />} />
         <Route path="/workspace" element={<SearchWorkspace />} />
+        <Route path="/results" element={<ResultsPage />} />
       </Routes>
     </Router>
   );

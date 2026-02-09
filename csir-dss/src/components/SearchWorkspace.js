@@ -6,74 +6,99 @@ export default function SearchWorkspace() {
   const navigate = useNavigate();
 
   const [text, setText] = useState("");
-  const [stage, setStage] = useState("idle");
-  const [keywords, setKeywords] = useState([]);
-  const [papers, setPapers] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   const maxChars = 1000;
 
-  const demoPapers = [
-    "Paper 1",
-    "Paper 2",
-    "Paper 3",
-    "Paper 4",
-    "Paper 5"
-  ];
+  const getHistory = () => {
+    return JSON.parse(localStorage.getItem("searchHistory") || "[]");
+  };
 
   const handleSearch = () => {
     if (!text.trim()) return;
 
-    setStage("extracting");
-    setKeywords([]);
-    setPapers([]);
+    const history = getHistory();
+    history.unshift({
+      text,
+      time: new Date().toLocaleString()
+    });
 
-    /* stage 1 — extracting */
-    setTimeout(() => {
-      setKeywords(["Keyword1", "Keyword2", "Keyword3"]);
-      setStage("searching");
-    }, 1500);
+    localStorage.setItem(
+      "searchHistory",
+      JSON.stringify(history.slice(0, 20))
+    );
 
-    /* stage 2 — searching */
-    setTimeout(() => {
-      setStage("results");
-
-      demoPapers.forEach((p, i) => {
-        setTimeout(() => {
-          setPapers(prev => [...prev, p]);
-        }, i * 600);
-      });
-
-    }, 3000);
+    navigate("/results", {
+      state: { abstractText: text }
+    });
   };
+
+  const history = getHistory();
 
   return (
     <div className="workspace-2col">
 
-      {/* LEFT SIDEBAR */}
+      {/* SIDEBAR */}
       <div className="sidebar">
-        <button className="side-link">+ New Search</button>
-        <button className="side-link">History</button>
+        <button
+          className="side-link"
+          onClick={() => {
+            setText("");
+            setShowHistory(false);
+          }}
+        >
+          + New Search
+        </button>
+
+        <button
+          className="side-link"
+          onClick={() => setShowHistory(!showHistory)}
+        >
+          History
+        </button>
+
+        {showHistory && (
+          <div className="history-list">
+            {history.length === 0 && (
+              <p>No searches yet</p>
+            )}
+
+            {history.map((h, i) => (
+              <div
+                key={i}
+                className="history-item"
+                onClick={() => {
+                  setText(h.text);
+                  setShowHistory(false);
+                }}
+              >
+                {h.text.slice(0, 40)}...
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* RIGHT MAIN */}
+      {/* MAIN */}
       <div className="main-area">
 
-        {/* TOP ROW */}
         <div className="top-row">
           <div className="brand">
-            <img src={logo} alt="CSIR Logo" className="logo-small" />
+            <img src={logo} alt="CSIR Logo" className="logo-img" />
             <div>
               <h1>CSIR Fourth Paradigm Institute</h1>
               <h2>Document Similarity Search</h2>
             </div>
           </div>
 
-          <button className="home-btn" onClick={() => navigate("/mode")}>
+          <button
+            className="home-btn"
+            onClick={() => navigate("/mode")}
+          >
             HOME
           </button>
         </div>
 
-        {/* INPUT AREA */}
         <div className="content-box">
           <label className="input-label">
             Enter Research Abstract
@@ -85,11 +110,13 @@ export default function SearchWorkspace() {
             onChange={(e) =>
               setText(e.target.value.slice(0, maxChars))
             }
-            placeholder="Paste or type abstract text here..."
           />
 
           <div className="search-row">
-            <button className="search-btn" onClick={handleSearch}>
+            <button
+              className="search-btn"
+              onClick={handleSearch}
+            >
               Search
             </button>
 
@@ -98,52 +125,6 @@ export default function SearchWorkspace() {
             </span>
           </div>
         </div>
-
-        {/* ===== RESULTS FLOW ===== */}
-
-        {stage !== "idle" && (
-          <div className="results-section">
-
-            <h3>Search Results</h3>
-
-            {stage === "extracting" && (
-              <>
-                <div className="spinner"></div>
-                <p>Extracting Keywords</p>
-              </>
-            )}
-
-            {keywords.length > 0 && (
-              <p className="keyword-line">
-                {keywords.join(", ")} ...
-              </p>
-            )}
-
-            {stage === "searching" && (
-              <>
-                <div className="spinner"></div>
-                <p>Searching ArXiv Repository</p>
-              </>
-            )}
-
-            {papers.length > 0 && (
-              <>
-                <h3>Top 5 Similar Papers</h3>
-
-                {papers.map((p, i) => (
-                  <div key={i} className="paper-card">
-                    <div className="paper-title">{p}</div>
-
-                    <div className="paper-action">
-                      comparative analysis
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-
-          </div>
-        )}
 
       </div>
     </div>
